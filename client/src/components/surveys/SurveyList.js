@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchSurveys } from "../../actions";
@@ -6,7 +7,7 @@ class SurveyList extends Component {
   componentDidMount() {
     this.props.fetchSurveys();
   }
-  
+
   renderSurveys() {
     return this.props.surveys.reverse().map((survey) => {
       return (
@@ -21,6 +22,18 @@ class SurveyList extends Component {
           <div className="card-action">
             <a>Yes: {survey.yes}</a>
             <a>No: {survey.no}</a>
+            <i
+              className="material-icons right tooltipped"
+              data-position="bottom"
+              data-tooltip="Permanent delete"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                axios.delete(`/api/delete-survey/${survey._id}`);
+                this.props.fetchSurveys();
+              }}
+            >
+              delete
+            </i>
           </div>
         </div>
       );

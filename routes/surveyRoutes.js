@@ -79,4 +79,11 @@ module.exports = (app) => {
       res.status(422).send(err);
     }
   });
+
+  app.delete("/api/delete-survey/:id", (req, res) => {
+    Survey.deleteOne({ _id: req.params.id }, (err) => {
+      if (err) return res.json({ message: "Something went wrong" });
+      return;
+    });
+  });
 };
