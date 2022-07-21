@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";  
+import { Link } from "react-router-dom";
 import SurveyList from "./surveys/SurveyList";
 
 const Dashboard = () => {
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "20px" }} className="container">
       <h3>Dashboard</h3>
       <SurveyList />
       <div className="fixed-action-btn">
