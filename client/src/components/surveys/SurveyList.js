@@ -1,43 +1,30 @@
-import axios from "axios";
 import React, { Component } from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import { fetchSurveys } from "../../actions";
 
+import SurveyItem from "./SurveyItem";
+
 class SurveyList extends Component {
+  state = { orderedSurveys: this.props?.surveys };
+
   componentDidMount() {
     this.props.fetchSurveys();
   }
 
-  renderSurveys() {
-    if (this.props.surveys.length !== 0) {
-      return this.props.surveys.reverse().map((survey) => {
-        return (
-          <div className="card white darken-1" key={survey._id}>
-            <div className="card-content">
-              <span className="card-title">{survey.title}</span>
-              <p>{survey.body}</p>
-              <p className="right">
-                Sent on: {new Date(survey.dateSent).toLocaleDateString()}
-              </p>
-            </div>
-            <div className="card-action">
-              <a>Yes: {survey.yes}</a>
-              <a>No: {survey.no}</a>
-              <i
-                className="material-icons right tooltipped"
-                data-position="bottom"
-                data-tooltip="Permanent delete"
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  axios.delete(`/api/delete-survey/${survey._id}`);
-                  this.props.fetchSurveys();
-                }}
-              >
-                delete
-              </i>
-            </div>
-          </div>
-        );
+  handleDragEnd = (result) => {
+    if (!result.destination) return;
+    const items = Array.from(this.state.orderedSurveys);
+    const [reorderItems] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderItems);
+
+    this.setState({ orderedSurveys: items });
+  };
+
+  renderSurveys = () => {
+    if (this.state.orderedSurveys.length) {
+      return this.state.orderedSurveys.map((survey, index) => {
+        return <SurveyItem survey={survey} index={index} key={survey._id} />;
       });
     }
     return (
@@ -46,10 +33,31 @@ class SurveyList extends Component {
         <p>No surveys</p>
       </div>
     );
-  }
+  };
 
   render() {
-    return <div>{this.renderSurveys()}</div>;
+    console.log(
+      "🚀 ~ file: SurveyList.js ~ line 40 ~ SurveyList ~ render ~ this.props",
+      this.props
+    );
+    return (
+      <div>
+        <DragDropContext onDragEnd={this.handleDragEnd}>
+          <Droppable droppableId="surveys">
+            {(provided) => (
+              <div
+                style={{ height: "100%" }}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {this.renderSurveys()}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
+    );
   }
 }
 
