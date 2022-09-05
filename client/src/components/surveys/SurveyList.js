@@ -1,31 +1,31 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 import { fetchSurveys } from "../../actions";
 
 import SurveyItem from "./SurveyItem";
 
-class SurveyList extends Component {
-  state = { orderedSurveys: this.props?.surveys };
+const SurveyList = ({ surveys, fetchSurveys }) => {
+console.log("🚀 ~ file: SurveyList.js ~ line 9 ~ SurveyList ~ surveys", surveys)
 
-  componentDidMount() {
-    this.props.fetchSurveys();
-  }
+  useEffect(() => {
+    fetchSurveys();
+  }, []);
 
-  handleDragEnd = (result) => {
+  const handleDragEnd = (result) => {
     if (!result.destination) return;
-    const items = Array.from(this.state.orderedSurveys);
+    const items = Array.from(surveys);
     const [reorderItems] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderItems);
 
-    this.setState({ orderedSurveys: items });
+    console.log(items)
   };
 
-  renderSurveys = () => {
-    if (this.state.orderedSurveys.length) {
-      return this.state.orderedSurveys.map((survey, index) => {
-        return <SurveyItem survey={survey} index={index} key={survey._id} />;
-      });
+  const renderSurveys = () => {
+    if (surveys.length) {
+      return surveys.map((survey, index) => (
+        <SurveyItem survey={survey} index={index} key={survey._id} />
+      ));
     }
     return (
       <div style={{ width: "100%", height: "100%", textAlign: "center" }}>
@@ -35,31 +35,25 @@ class SurveyList extends Component {
     );
   };
 
-  render() {
-    console.log(
-      "🚀 ~ file: SurveyList.js ~ line 40 ~ SurveyList ~ render ~ this.props",
-      this.props
-    );
-    return (
-      <div>
-        <DragDropContext onDragEnd={this.handleDragEnd}>
-          <Droppable droppableId="surveys">
-            {(provided) => (
-              <div
-                style={{ height: "100%" }}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {this.renderSurveys()}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="surveys">
+          {(provided) => (
+            <div
+              style={{ height: "100%" }}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {renderSurveys()}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </div>
+  );
+};
 
 const mapStateToProps = ({ surveys }) => {
   return { surveys };
