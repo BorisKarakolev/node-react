@@ -6,24 +6,30 @@ import { fetchSurveys } from "../../actions";
 import SurveyItem from "./SurveyItem";
 
 const SurveyList = ({ surveys, fetchSurveys }) => {
-console.log("🚀 ~ file: SurveyList.js ~ line 9 ~ SurveyList ~ surveys", surveys)
+  const [orderedSurveys, setOrderedSurveys] = useState([]);
 
   useEffect(() => {
     fetchSurveys();
   }, []);
 
+  useEffect(() => {
+    console.log('surveys', surveys)
+    setOrderedSurveys(surveys)
+  }, [surveys])
+
   const handleDragEnd = (result) => {
     if (!result.destination) return;
-    const items = Array.from(surveys);
+    const items = Array.from(orderedSurveys);
     const [reorderItems] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderItems);
 
-    console.log(items)
+    // Implement localStorage or set indexes in the surveys collection to reorder
+    setOrderedSurveys(items)
   };
 
   const renderSurveys = () => {
-    if (surveys.length) {
-      return surveys.map((survey, index) => (
+    if (orderedSurveys.length) {
+      return orderedSurveys.map((survey, index) => (
         <SurveyItem survey={survey} index={index} key={survey._id} />
       ));
     }
