@@ -13,9 +13,15 @@ const SurveyList = ({ surveys, fetchSurveys }) => {
   }, []);
 
   useEffect(() => {
-    console.log('surveys', surveys)
     setOrderedSurveys(surveys)
   }, [surveys])
+
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem("surveys"));
+    if (items) {
+      setOrderedSurveys(items);
+    }
+  }, [surveys]);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
@@ -23,7 +29,8 @@ const SurveyList = ({ surveys, fetchSurveys }) => {
     const [reorderItems] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderItems);
 
-    // Implement localStorage or set indexes in the surveys collection to reorder
+    // localStorage implemented but not satisfied from the solution try reorder directly in collection
+    localStorage.setItem("surveys", JSON.stringify(items));
     setOrderedSurveys(items)
   };
 
