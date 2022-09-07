@@ -8,6 +8,7 @@ const Mailer = require("../services/Mailer");
 const surveyTemplate = require("../services/emailTemplates/surveyTemplate");
 
 const Survey = mongoose.model("surveys");
+const Draft = mongoose.model('drafts')
 
 module.exports = (app) => {
   app.get("/api/surveys", requireLogin, async (req, res) => {
@@ -77,6 +78,28 @@ module.exports = (app) => {
       res.send(user);
     } catch (err) {
       res.status(422).send(err);
+    }
+  });
+
+  app.post("/api/drafts", requireLogin, async (req, res) => {
+    const { title, subject, body, recipients } = req.body;
+
+    const draft = new Draft({
+      title,
+      subject,
+      body,
+      recipients: recipients
+        .split(",")
+        .map((email) => ({ email: email.trim() })),
+      _user: req.user.id,
+      dateSent: Date.now(),
+    });
+
+    try{
+      await draft.save()
+      res.status(200).send('Drafted')
+    } catch (err) {
+      res.status(400).send(err)
     }
   });
 

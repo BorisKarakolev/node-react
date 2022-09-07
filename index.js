@@ -7,6 +7,7 @@ const keys = require("./config/keys");
 
 require("./models/User");
 require("./models/Survey");
+require("./models/Draft")
 require("./services/passport");
 
 const app = express();
