@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import SurveyField from "./SurveyField";
 import validateEmails from "../../utils/validateEmails";
 import FIELDS from "./formFields";
+import Modal from "../Modal";
 
 class SurveyForm extends Component {
+  state = { modalOpen: false };
   renderFields() {
     return FIELDS.map(({ label, name }) => {
       return (
@@ -40,6 +42,15 @@ class SurveyForm extends Component {
             </button>
           </div>
         </form>
+        <Modal modalOpen={this.state.modalOpen} modalClose={() => this.setState({modalOpen: false})} />
+        <div className="fixed-action-btn">
+          <button
+            className="btn-floating btn-large orange"
+            onClick={() => this.setState({ modalOpen: true })}
+          >
+            <i className="material-icons right">drafts</i>
+          </button>
+        </div>
       </div>
     );
   }

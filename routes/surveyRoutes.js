@@ -16,11 +16,19 @@ module.exports = (app) => {
       recipients: false,
     });
 
-    res.send(surveys);
+    res.json(surveys);
+  });
+
+  app.get("/api/drafts", requireLogin, async (req, res) => {
+    const drafts = await Draft.find({ _user: req.user.id }).select({
+      recipients: false,
+    });
+
+    res.json(drafts);
   });
 
   app.get("/api/surveys/:surveyId/:choice", (req, res) => {
-    res.send("Thanks for voting!");
+    res.json("Thanks for voting!");
   });
 
   app.post("/api/surveys/webhooks", (req, res) => {

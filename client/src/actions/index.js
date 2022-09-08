@@ -7,6 +7,9 @@ export const fetchUser = () => async (dispatch) =>
 export const fetchSurveys = () => async (dispatch) =>
   dispatch({ type: FETCH_SURVEYS, payload: await axios.get("/api/surveys") });
 
+export const fetchDrafts = () => async (dispatch) =>
+  dispatch({ type: FETCH_SURVEYS, payload: await axios.get("/api/drafts") })
+
 export const handleToken = (token) => async (dispatch) =>
   dispatch({
     type: FETCH_USER,
