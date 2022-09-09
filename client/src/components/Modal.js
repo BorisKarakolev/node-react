@@ -3,10 +3,28 @@ import { connect } from "react-redux";
 import { fetchDrafts } from "../actions";
 
 const Modal = ({ modalOpen, modalClose, fetchDrafts, surveys }) => {
+  console.log("🚀 ~ file: Modal.js ~ line 6 ~ Modal ~ surveys", surveys);
 
   useEffect(() => {
-    fetchDrafts()
-  }, [])
+    fetchDrafts();
+  }, []);
+
+  const renderDrafts = () => {
+    return (
+      <ul className="collection">
+        {surveys.map((draft) => (
+          <li key={draft._id} className="collection-item">
+            <div>
+              {draft.title}
+              <a href="#!" className="secondary-content">
+                <i className="material-icons">send</i>
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   return (
     <div
@@ -21,8 +39,8 @@ const Modal = ({ modalOpen, modalClose, fetchDrafts, surveys }) => {
             close
           </i>
         </div>
-
         <h4>Drafts</h4>
+        {renderDrafts()}
       </div>
     </div>
   );
