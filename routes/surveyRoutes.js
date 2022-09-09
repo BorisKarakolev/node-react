@@ -117,4 +117,11 @@ module.exports = (app) => {
       return;
     });
   });
+
+  app.delete("/api/delete-draft/:id", (req, res) => {
+    Draft.deleteOne({ _id: req.params.id }, (err) => {
+      if (err) return res.json({ message: "Something went wrong" });
+      return;
+    });
+  });
 };
