@@ -42,7 +42,10 @@ class SurveyForm extends Component {
             </button>
           </div>
         </form>
-        <Modal modalOpen={this.state.modalOpen} modalClose={() => this.setState({modalOpen: false})} />
+        <Modal
+          modalOpen={this.state.modalOpen}
+          modalClose={() => this.setState({ modalOpen: false })}
+        />
         <div className="fixed-action-btn">
           <button
             className="btn-floating btn-large orange"

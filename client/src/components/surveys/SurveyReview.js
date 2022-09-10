@@ -4,7 +4,13 @@ import { withRouter } from "react-router-dom";
 import FIELDS from "./formFields";
 import * as actions from "../../actions";
 
-const SurveyReview = ({ onCancel, formValues, submitSurvey, saveDraft, history }) => {
+const SurveyReview = ({
+  onCancel,
+  formValues,
+  submitSurvey,
+  saveDraft,
+  history,
+}) => {
   const reviewFields = FIELDS.map(({ name, label }) => {
     return (
       <div key={name} style={{ margin: "20px" }}>
@@ -35,7 +41,7 @@ const SurveyReview = ({ onCancel, formValues, submitSurvey, saveDraft, history }
         </button>
         <button
           onClick={() => saveDraft(formValues, history)}
-          className="btn waves-effect waves-light left"
+          className="btn orange left"
         >
           Save Draft
         </button>

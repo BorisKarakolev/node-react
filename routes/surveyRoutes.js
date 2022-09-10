@@ -20,10 +20,7 @@ module.exports = (app) => {
   });
 
   app.get("/api/drafts", requireLogin, async (req, res) => {
-    const drafts = await Draft.find({ _user: req.user.id }).select({
-      recipients: false,
-    });
-
+    const drafts = await Draft.find({ _user: req.user.id })
     res.json(drafts);
   });
 
@@ -59,7 +56,7 @@ module.exports = (app) => {
       })
       .value();
 
-    res.send({});
+    res.json({});
   });
 
   app.post("/api/surveys", requireLogin, requireCredits, async (req, res) => {
@@ -83,9 +80,9 @@ module.exports = (app) => {
       req.user.credits -= 1;
       const user = await req.user.save();
 
-      res.send(user);
+      res.json(user);
     } catch (err) {
-      res.status(422).send(err);
+      res.status(422).json(err);
     }
   });
 
@@ -105,9 +102,9 @@ module.exports = (app) => {
 
     try{
       await draft.save()
-      res.status(200).send('Drafted')
+      res.status(200).json('Drafted')
     } catch (err) {
-      res.status(400).send(err)
+      res.status(400).json(err)
     }
   });
 

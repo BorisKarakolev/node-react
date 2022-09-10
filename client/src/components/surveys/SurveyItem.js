@@ -31,6 +31,7 @@ const SurveyItem = ({ survey, fetchSurveys, index }) => {
               style={{ cursor: "pointer" }}
               onClick={() => {
                 axios.delete(`/api/delete-survey/${survey._id}`);
+                // Fix here to remove the item also from the localStorage
                 fetchSurveys();
               }}
             >

@@ -1,10 +1,15 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchDrafts } from "../actions";
+import { fetchDrafts, submitSurvey } from "../actions";
 
-const Modal = ({ modalOpen, modalClose, fetchDrafts, surveys }) => {
-  console.log("🚀 ~ file: Modal.js ~ line 6 ~ Modal ~ surveys", surveys);
-
+const Modal = ({
+  modalOpen,
+  modalClose,
+  fetchDrafts,
+  surveys,
+  submitSurvey,
+}) => {
   useEffect(() => {
     fetchDrafts();
   }, []);
@@ -16,9 +21,15 @@ const Modal = ({ modalOpen, modalClose, fetchDrafts, surveys }) => {
           <li key={draft._id} className="collection-item">
             <div>
               {draft.title}
-              <a href="#!" className="secondary-content">
-                <i className="material-icons">send</i>
-              </a>
+              <div
+              // Make new api in the backend ex: sabmitDraft, already done survey just to send and save in surveys but delete from drafts
+                onClick={() => console.log(draft)}
+                className="secondary-content"
+              >
+                <i className="material-icons" style={{ cursor: "pointer" }}>
+                  send
+                </i>
+              </div>
             </div>
           </li>
         ))}
@@ -50,4 +61,4 @@ const mapStateToProps = ({ surveys }) => {
   return { surveys };
 };
 
-export default connect(mapStateToProps, { fetchDrafts })(Modal);
+export default connect(mapStateToProps, { fetchDrafts, submitSurvey })(Modal);
